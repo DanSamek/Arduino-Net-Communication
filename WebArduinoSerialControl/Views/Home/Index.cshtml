@@ -1,0 +1,51 @@
+﻿@{
+    ViewData["Title"] = "Home Page";
+}
+@{
+    List<string> options = ViewData.Model;
+    string[] ports = (string [])ViewData["ports"];
+    //action="/home/execute/@allInputs[0]" 
+}
+<div>
+    @foreach(string item in options) {
+        ;
+        string[] allInputs = item.Split(";");
+        <form id=@allInputs[0] onsubmit=sendData(@allInputs[0])>
+            <p>@allInputs[1]</p>
+                  <select>
+                @for(int port = 0; port < ports.Length; port++)
+                {
+                     <option value="@ports[port]">@ports[port]</option>
+                }
+        </select>
+            
+                @for(int input = 2; input < allInputs.Length; input++) {
+                    <input type="text" placeholder="@allInputs[input]" name="@input">
+                }   
+            <input type="submit">
+        </form>
+    }
+</div>
+
+
+<script>
+    async function sendData(id){
+         var inputValuesArray = document.getElementById(id).elements;
+         let finalString = ""
+         for(var index = 0; index < inputValuesArray.length-1 ;index++ ){
+             finalString+=document.getElementById(id).elements.item(index).value +";";
+         }
+         console.log(finalString);
+         fetch(`/home/execute/${id}`, {
+                body: JSON.stringify({
+                    execute: finalString,
+                }),
+                headers: {
+                     'Accept': 'application/json',
+                 'Content-type': 'application/json',
+                },
+            method:"POST",
+         });
+        }
+    
+</script>
