@@ -26,12 +26,31 @@ namespace WebArduinoSerialControl.Controllers
             return View(inputs);
         }
 
-
         [HttpPost]
         public IActionResult Execute([FromBody] Data content)
         {
-            Debug.WriteLine(content.execute);
-            return Redirect("/");
+            content.execute = content.execute.Remove(content.execute.Length - 1);
+            string[] separatedInput = content.execute.Split(";");
+            var response = "";
+            string endString = "";
+            for (int index = 1; index < separatedInput.Length; index++) {
+                if (separatedInput.Length - 1 == index)
+                    endString += separatedInput[index];
+                else endString += separatedInput[index] +";";
+            }
+            SerialPort sp = new SerialPort();
+            try {
+                sp.PortName = separatedInput[0];
+                sp.BaudRate = 9600;
+                sp.Open();
+                sp.WriteLine(endString);
+                response = sp.ReadLine();
+                sp.Close();
+            }
+            catch (Exception ex) {
+                Console.WriteLine(ex.Message);
+            }
+            return Json(response);
         }
 
         public class Data {

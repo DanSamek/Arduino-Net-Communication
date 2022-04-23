@@ -10,7 +10,7 @@
     @foreach(string item in options) {
         ;
         string[] allInputs = item.Split(";");
-        <form id=@allInputs[0] onsubmit=sendData(@allInputs[0])>
+        <form id=@allInputs[0]  method="post">
             <p>@allInputs[1]</p>
                   <select>
                 @for(int port = 0; port < ports.Length; port++)
@@ -18,11 +18,14 @@
                      <option value="@ports[port]">@ports[port]</option>
                 }
         </select>
+        <input type="hidden" value="@allInputs[1]">
             
                 @for(int input = 2; input < allInputs.Length; input++) {
-                    <input type="text" placeholder="@allInputs[input]" name="@input">
+                    if(allInputs[input].Length >0) {
+                        <input type="text" placeholder="@allInputs[input]" name="@input">
+                    }
                 }   
-            <input type="submit">
+            <button onclick="sendData(@allInputs[0])" type="button">Launch</button>
         </form>
     }
 </div>
@@ -30,22 +33,21 @@
 
 <script>
     async function sendData(id){
-         var inputValuesArray = document.getElementById(id).elements;
-         let finalString = ""
-         for(var index = 0; index < inputValuesArray.length-1 ;index++ ){
-             finalString+=document.getElementById(id).elements.item(index).value +";";
-         }
-         console.log(finalString);
-         fetch(`/home/execute/${id}`, {
+            var inputValuesArray = document.getElementById(id).elements;
+            let finalString = "";
+            for(var index = 0; index < inputValuesArray.length-1 ;index++ ){
+                if(document.getElementById(id).elements.item(index).value)
+                finalString+=document.getElementById(id).elements.item(index).value +";";
+            }
+            fetch(`/home/execute/${id}`, {
                 body: JSON.stringify({
                     execute: finalString,
                 }),
                 headers: {
-                     'Accept': 'application/json',
-                 'Content-type': 'application/json',
+                        'Accept': 'application/json',
+                    'Content-type': 'application/json',
                 },
             method:"POST",
-         });
+            });
         }
-    
 </script>
