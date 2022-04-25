@@ -1,3 +1,0 @@
-#include "mainFunctions.h"
-
-//all functions...

@@ -1,3 +1,4 @@
+#include "setupFile.h"
 
 void setup() {
   Serial.begin(9600);
@@ -26,7 +27,9 @@ String *StringSerialToArr(String data) {
 
 String Execute(String function, String data[]){
   //TODO
-  
+  if(function == "ledOperation"){
+      turnOnLed(data[1].toInt(), data[0].toInt());
+    }
 }
 
 void loop() {
@@ -36,4 +39,3 @@ void loop() {
     String res = Execute(data[0],data);
   }
 }
-
