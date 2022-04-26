@@ -63,6 +63,7 @@ namespace WebArduinoSerialControl.Controllers
             catch (Exception ex){
                 Console.WriteLine(ex.Message);
             }
+            response = "";
             return Json(response);
         }
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]

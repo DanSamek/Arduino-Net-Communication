@@ -28,16 +28,20 @@
     }
 </div>
 
+<script src="/lib/jquery/dist/jquery.min.js"></script>
 
 <script>
     async function sendData(id){
             var inputValuesArray = document.getElementById(id).elements;
+
+            $(`#${id}`).addClass("pending");
+            $(`#${id}`).removeClass("success error");
             let finalString = "";
             for(var index = 0; index < inputValuesArray.length-1 ;index++ ){
                 if(document.getElementById(id).elements.item(index).value)
                 finalString+=document.getElementById(id).elements.item(index).value +";";
             }
-            fetch(`/home/execute/${id}`, {
+            let res = await fetch(`/home/execute/${id}`, {
                 body: JSON.stringify({
                     execute: finalString,
                 }),
@@ -47,5 +51,11 @@
                 },
             method:"POST",
             });
+            var data = await res.json();
+            $(`#${id}`).removeClass("pending");              
+            if(data == "ok") $(`#${id}`).addClass("success");
+             else {
+                 $(`#${id}`).addClass("error");
+            }
         }
 </script>
