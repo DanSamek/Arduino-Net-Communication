@@ -1,9 +1,5 @@
 #include "setupFile.h"
 
-void setup() {
-  Serial.begin(9600);
-}
-
 String *StringSerialToArr(String data) {
   static String splittedData[20];
   String between = "";
@@ -26,16 +22,6 @@ String *StringSerialToArr(String data) {
 
 
 String Execute(String function, String data[]){
-  //TODO
-  if(function == "ledOperation"){
-      turnOnLed(data[1].toInt(), data[0].toInt());
-    }
-}
-
-void loop() {
-  if(Serial.available()){
-    String *data;
-    data = StringSerialToArr(Serial.readString());
-    String res = Execute(data[0],data);
-  }
+  //ALL FUNCTIONS WILL GO HERE
+  if(function == "turnOnLed") turnOnLed(data[1].toInt(), data[2].toInt());
 }

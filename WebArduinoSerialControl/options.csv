@@ -1,2 +1,2 @@
-﻿1;Led operation;PIN;Value;;
-2;Test;PIN ;Value;A;B
+﻿1;Led operation;turnOnLed;PIN;Value;;
+2;Test;TestFunction;PIN ;Value;A;B

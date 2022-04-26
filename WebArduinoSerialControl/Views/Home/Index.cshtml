@@ -4,7 +4,6 @@
 @{
     List<string> options = ViewData.Model;
     string[] ports = (string [])ViewData["ports"];
-    //action="/home/execute/@allInputs[0]" 
 }
 <div>
     @foreach(string item in options) {
@@ -18,9 +17,8 @@
                      <option value="@ports[port]">@ports[port]</option>
                 }
         </select>
-        <input type="hidden" value="@allInputs[1]">
-            
-                @for(int input = 2; input < allInputs.Length; input++) {
+        <input type="hidden" value="@allInputs[2]">
+                @for(int input = 3; input < allInputs.Length; input++) {
                     if(allInputs[input].Length >0) {
                         <input type="text" placeholder="@allInputs[input]" name="@input">
                     }
