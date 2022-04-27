@@ -54,7 +54,7 @@
             var data = await res.json();
             $(`#${id}`).removeClass("pending");              
             if(data == "ok") $(`#${id}`).addClass("success");
-             else {
+            else {
                  $(`#${id}`).addClass("error");
             }
         }

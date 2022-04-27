@@ -1,0 +1,12 @@
+@{
+    ViewData["Title"] = "Home Page";
+}
+@{
+    List<string> logs = ViewData.Model;
+}
+
+<div class="logs">
+    @foreach(var line in logs){
+        <p>@line</p>
+     }
+</div>
