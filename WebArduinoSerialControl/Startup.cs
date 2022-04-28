@@ -8,11 +8,14 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using System.IO;
 
 namespace WebArduinoSerialControl
 {
     public class Startup
     {
+
+        string logsPath = System.IO.Path.GetFullPath(".") + @"\logs.txt";
         public Startup(IConfiguration configuration)
         {
             Configuration = configuration;
@@ -24,6 +27,7 @@ namespace WebArduinoSerialControl
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddControllersWithViews();
+            if (!System.IO.File.Exists(logsPath)) System.IO.File.Create(logsPath);
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

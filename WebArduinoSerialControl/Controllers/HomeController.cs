@@ -87,7 +87,6 @@ namespace WebArduinoSerialControl.Controllers
         public class Data
         {
             public string execute { get; set; }
-
         }
     }
 }

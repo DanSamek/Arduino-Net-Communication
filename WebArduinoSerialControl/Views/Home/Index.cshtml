@@ -7,7 +7,6 @@
 }
 <div>
     @foreach(string item in options) {
-        ;
         string[] allInputs = item.Split(";");
         <form id=@allInputs[0]  method="post">
             <p>@allInputs[1]</p>
@@ -59,3 +58,4 @@
             }
         }
 </script>
+

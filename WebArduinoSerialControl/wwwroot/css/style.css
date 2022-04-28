@@ -1,0 +1,33 @@
+﻿.pending {
+    background-image: url(/img/Spinner.gif);
+    background-size: 90px 90px;
+    background-repeat: no-repeat;
+    background-position: right;
+}
+
+.error {
+    background-image: url(/img/error.png);
+    background-size: 55px 55px;
+    background-repeat: no-repeat;
+    background-position: right; 
+}
+.success {
+    background-image: url(/img/success.png);
+    background-size: 55px 55px;
+    background-repeat: no-repeat;
+    background-position: right;
+}
+
+.pb-3 {
+    max-width: 1300px;
+    margin: 0 auto;
+}
+
+.container {
+    align-items: center;
+}
+
+
+form {
+    width: 90%;
+}
