@@ -27,12 +27,12 @@ namespace WebArduinoSerialControl
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddControllersWithViews();
-            if (!System.IO.File.Exists(logsPath)) System.IO.File.Create(logsPath);
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
+            if (!System.IO.File.Exists(logsPath)) System.IO.File.Create(logsPath);
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
