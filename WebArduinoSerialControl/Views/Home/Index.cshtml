@@ -49,7 +49,7 @@
             });
             var data = await res.json();
             $(`#${id}`).removeClass("pending");              
-            if(data == "ok") $(`#${id}`).addClass("success");
+            if(data == "ok\r") $(`#${id}`).addClass("success");
             else {
                  $(`#${id}`).addClass("error");
             }

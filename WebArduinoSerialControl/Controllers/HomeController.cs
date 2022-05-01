@@ -35,7 +35,7 @@ namespace WebArduinoSerialControl.Controllers
             string endString = "";
             List<string> data = new List<string>();
 
-            for (int index = 0; index < separatedInput.Length; index++) {
+            for (int index = 1; index < separatedInput.Length; index++) {
                 if (separatedInput.Length - 1 == index)
                     endString += separatedInput[index];
                 else endString += separatedInput[index] +";";
@@ -54,15 +54,15 @@ namespace WebArduinoSerialControl.Controllers
                 sp.PortName = separatedInput[0];
                 sp.BaudRate = 9600;
                 sp.Open();
+                Debug.WriteLine(endString);
                 sp.WriteLine(endString);
-                sp.DiscardInBuffer();
-                sp.DiscardOutBuffer();
-                System.Threading.Thread.Sleep(2000);
-                if(sp.BytesToRead > 0 ) { 
-                    var res = sp.ReadLine();
-                    sp.Close();
-                    return res;
+                while(sp.BytesToRead > 0 ) {
+                    System.Threading.Thread.Sleep(1);
                 }
+                var res = sp.ReadLine();
+                Debug.WriteLine(res);
+                sp.Close();
+                return res;
             }
             catch (Exception ex) { Debug.WriteLine(ex.Message); }
             return "err";

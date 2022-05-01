@@ -1,2 +1,4 @@
-﻿1;Led operation;turnOnLed;PIN;Value;;
-2;Test;TestFunction;PIN ;Value;A;B
+﻿1;Led operation;turnOnLed;PIN;Value;;;;
+2;Test;TestFunction;PIN ;Value;A;B;;
+3;LCD - Alphabet;showAlphabet;RS;Enable;DB4;DB5;DB6;DB7
+4;LCD - Custom;showCustomSymbol;RS;Enable;DB4;DB5;DB6;DB7
