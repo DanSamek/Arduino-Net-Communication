@@ -12,6 +12,8 @@ namespace WebArduinoSerialControl.Controllers
     public class HomeController : Controller
     {
         string logsPath = System.IO.Path.GetFullPath(".") + @"\logs.txt";
+
+        public string recentlyUsed;
         public IActionResult Index()
         {
             string[] ports = SerialPort.GetPortNames();
@@ -67,6 +69,25 @@ namespace WebArduinoSerialControl.Controllers
             catch (Exception ex) { Debug.WriteLine(ex.Message); }
             return "err";
         }
+
+        [HttpPost]
+        public IActionResult getString([FromBody] Data ćontent) {
+            ćontent.execute = ćontent.execute.Remove(ćontent.execute.Length - 1);
+            string[] separatedInput = ćontent.execute.Split(";");
+            string endString = "";
+            List<string> data = new List<string>();
+
+            for (int index = 1; index < separatedInput.Length; index++)
+            {
+                if (separatedInput.Length - 1 == index)
+                    endString += separatedInput[index];
+                else endString += separatedInput[index] + ";";
+            }
+            string response = getResponse(endString, separatedInput);
+            return Json(response);
+        }
+
+
         public IActionResult Logs() {
 
             List<string> logs = new List<string>();

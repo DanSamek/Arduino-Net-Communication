@@ -70,11 +70,16 @@ String *StringSerialToArr(String data) {
   return splittedData;
 }
 
+String potenciometr(int pin){  
+  return String(analogRead(pin), DEC);
+}
+
 String Execute(String function, String data[]){
   //ALL FUNCTIONS WILL GO HERE
   String res;
   if(function == "turnOnLed") res = turnOnLed(data[1].toInt(), data[2].toInt());
   if(function == "showAlphabet") res = showAlphabet(data[1].toInt(), data[2].toInt(), data[3].toInt(),data[4].toInt(),data[5].toInt(), data[6].toInt());
   if(function == "showCustomSymbol") res = showCustomSymbol(data[1].toInt(), data[2].toInt(), data[3].toInt(),data[4].toInt(),data[5].toInt(), data[6].toInt());
+  if(function == "potenciometr") res=potenciometr(data[1].toInt());
   return res;
 }

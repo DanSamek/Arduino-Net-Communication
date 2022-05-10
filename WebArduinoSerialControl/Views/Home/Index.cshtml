@@ -9,24 +9,30 @@
     @foreach(string item in options) {
         string[] allInputs = item.Split(";");
         <form id=@allInputs[0]  method="post">
-            <p>@allInputs[1]</p>
+            <p>@allInputs[2]</p>
                   <select>
                 @for(int port = 0; port < ports.Length; port++)
                 {
                      <option value="@ports[port]">@ports[port]</option>
                 }
         </select>
-        <input type="hidden" value="@allInputs[2]">
-                @for(int input = 3; input < allInputs.Length; input++) {
+        <input type="hidden" value="@allInputs[3]">
+                @for(int input = 4; input < allInputs.Length; input++) {
                     if(allInputs[input].Length >0) {
                         <input type="text" placeholder="@allInputs[input]" name="@input">
                     }
                 }   
-            <button onclick="sendData(@allInputs[0])" type="button">Launch</button>
+                @if(@allInputs[1] == "sendData"){
+                <button onclick="sendData(@allInputs[0])" type="button">Launch</button>
+                }
+                @if(@allInputs[1] == "getData"){
+                     <button onclick="getData(@allInputs[0])" type="button">Launch</button>
+                }
         </form>
     }
 </div>
 <script>
+    var array = [];
     async function sendData(id){
             var inputValuesArray = document.getElementById(id).elements;
 
@@ -53,6 +59,30 @@
             else {
                  $(`#${id}`).addClass("error");
             }
+        }
+
+        async function getData(id){
+            var inputValuesArray = document.getElementById(id).elements;
+            let finalString = "";
+
+
+            for(var index = 0; index < inputValuesArray.length-1 ;index++ ){
+                if(document.getElementById(id).elements.item(index).value)
+                finalString+=document.getElementById(id).elements.item(index).value +";";
+            }
+            let res = await fetch(`/home/getString/${id}`, {
+                body: JSON.stringify({
+                    execute: finalString,
+                }),
+                headers: {
+                        'Accept': 'application/json',
+                    'Content-type': 'application/json',
+                },
+            method:"POST",
+            });
+            var data = await res.json();
+            array.push(data.replace("\r", ""));
+            console.log(array);
         }
 </script>
 
