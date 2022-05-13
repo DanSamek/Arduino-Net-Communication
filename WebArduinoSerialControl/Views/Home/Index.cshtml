@@ -26,13 +26,22 @@
                 <button onclick="sendData(@allInputs[0])" type="button">Launch</button>
                 }
                 @if(@allInputs[1] == "getData"){
-                     <button onclick="getData(@allInputs[0])" type="button">Launch</button>
+                <button onclick="getData(@allInputs[0])" type="button">Launch</button>
+                { string id = allInputs[0]; }
+                <div id="graph"+@id></div>
                 }
         </form>
     }
 </div>
+<script
+src="https://www.gstatic.com/charts/loader.js">
+</script>
 <script>
-    var array = [];
+    google.charts.load('current',{packages:['corechart']});
+    var graphData = [];
+    var graphId;
+    var time = 0;
+    var interval = 2000;
     async function sendData(id){
             var inputValuesArray = document.getElementById(id).elements;
 
@@ -62,6 +71,10 @@
         }
 
         async function getData(id){
+            if(id !== graphId) {
+                graphId = id;
+                graphData = [["Value", "Time"]]
+            }
             var inputValuesArray = document.getElementById(id).elements;
             let finalString = "";
 
@@ -70,19 +83,42 @@
                 if(document.getElementById(id).elements.item(index).value)
                 finalString+=document.getElementById(id).elements.item(index).value +";";
             }
-            let res = await fetch(`/home/getString/${id}`, {
+            setInterval(async() =>{
+                let res = await fetch(`/home/getString/${id}`, {
                 body: JSON.stringify({
                     execute: finalString,
                 }),
                 headers: {
-                        'Accept': 'application/json',
-                    'Content-type': 'application/json',
-                },
-            method:"POST",
-            });
-            var data = await res.json();
-            array.push(data.replace("\r", ""));
-            console.log(array);
+                    'Accept': 'application/json',
+                        'Content-type': 'application/json',
+                    },
+                method:"POST",
+                });
+                 var data = await res.json();
+                 if (data == "err"){
+                     data = 50;
+                     var graphItem = [data, time];
+                 } else{
+                     var graphItem = [data.replace("\r", ""), time];
+                 }
+                 console.log(graphItem);
+                 time+=interval;
+                 graphData.push(graphItem);
+                 console.log(graphData);
+                 google.charts.setOnLoadCallback(renderGraph(graphId));
+            }, interval)
+        }
+
+        async function renderGraph(id){
+            var e =  google.visualization.arrayToDataTable(graphData);
+            var options = {
+              title: '',
+              hAxis: {title: 'Value'},
+              vAxis: {title: 'Time'},
+              legend: 'none'
+            };
+            var graph = new google.visualization.LineChart(document.getElementById(`graph${id}`));
+            graph.draw(graphData, options);
         }
 </script>
 
