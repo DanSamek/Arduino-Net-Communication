@@ -27,9 +27,9 @@
                 }
                 @if(@allInputs[1] == "getData"){
                 <button onclick="getData(@allInputs[0])" type="button">Launch</button>
-                { string id = allInputs[0]; }
-                <div id="graph"+@id></div>
-                }
+                string divId = "graph" + allInputs[0];
+                <div id=@divId></div>
+                }                  
         </form>
     }
 </div>
@@ -73,7 +73,9 @@ src="https://www.gstatic.com/charts/loader.js">
         async function getData(id){
             if(id !== graphId) {
                 graphId = id;
-                graphData = [["Value", "Time"]]
+                graphData = [["Time", "Value"]];
+                //graphData = [["Value", "Time"]];
+
             }
             var inputValuesArray = document.getElementById(id).elements;
             let finalString = "";
@@ -96,10 +98,11 @@ src="https://www.gstatic.com/charts/loader.js">
                 });
                  var data = await res.json();
                  if (data == "err"){
-                     data = 50;
-                     var graphItem = [data, time];
+                     data = Math.random()*100;
+                     var graphItem = [time, data];
                  } else{
-                     var graphItem = [data.replace("\r", ""), time];
+                     //var graphItem = [data.replace("\r", ""), time];
+                     var graphItem = [time, data.replace("\r", "")];
                  }
                  console.log(graphItem);
                  time+=interval;
@@ -110,15 +113,16 @@ src="https://www.gstatic.com/charts/loader.js">
         }
 
         async function renderGraph(id){
-            var e =  google.visualization.arrayToDataTable(graphData);
+            var endData =  google.visualization.arrayToDataTable(graphData);
             var options = {
-              title: '',
-              hAxis: {title: 'Value'},
-              vAxis: {title: 'Time'},
+              title: 'Data visualizer v1.0',
+              hAxis: {title: 'Time'},
+              vAxis: {title: 'Value'},
               legend: 'none'
             };
+            console.log(`graph${id}`);
             var graph = new google.visualization.LineChart(document.getElementById(`graph${id}`));
-            graph.draw(graphData, options);
+            graph.draw(endData, options);
         }
 </script>
 
