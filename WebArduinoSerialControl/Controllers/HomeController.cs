@@ -56,13 +56,11 @@ namespace WebArduinoSerialControl.Controllers
                 sp.PortName = separatedInput[0];
                 sp.BaudRate = 9600;
                 sp.Open();
-                Debug.WriteLine(endString);
                 sp.WriteLine(endString);
                 while(sp.BytesToRead > 0 ) {
                     System.Threading.Thread.Sleep(1);
                 }
                 var res = sp.ReadLine();
-                Debug.WriteLine(res);
                 sp.Close();
                 return res;
             }
@@ -71,12 +69,10 @@ namespace WebArduinoSerialControl.Controllers
         }
 
         [HttpPost]
-        public IActionResult getString([FromBody] Data ćontent) {
-            ćontent.execute = ćontent.execute.Remove(ćontent.execute.Length - 1);
-            string[] separatedInput = ćontent.execute.Split(";");
+        public IActionResult getString([FromBody] Data content) {
+            content.execute = content.execute.Remove(content.execute.Length - 1);
+            string[] separatedInput = content.execute.Split(";");
             string endString = "";
-            List<string> data = new List<string>();
-
             for (int index = 1; index < separatedInput.Length; index++)
             {
                 if (separatedInput.Length - 1 == index)
@@ -95,7 +91,6 @@ namespace WebArduinoSerialControl.Controllers
             foreach (var dataitem in data)
                 logs.Add(dataitem);
 
-           
             return View(logs);
         }
 

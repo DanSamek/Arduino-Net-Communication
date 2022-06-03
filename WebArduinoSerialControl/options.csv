@@ -3,3 +3,4 @@
 3;sendData;LCD - Alphabet;showAlphabet;RS;Enable;DB4;DB5;DB6;DB7
 4;sendData;LCD - Custom;showCustomSymbol;RS;Enable;DB4;DB5;DB6;DB7
 5;getData;Potenciometr;potenciometr;PIN;;;;;
+6;getData;Potenciometr;potenciometr;PIN;;;;;

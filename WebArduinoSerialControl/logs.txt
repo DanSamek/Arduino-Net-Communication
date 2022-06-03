@@ -1,0 +1,1 @@
+03.06.2022 14:01:22;COM5;turnOnLed;4;0;response-status: ok03.06.2022 14:06:29;COM5;turnOnLed;4;0;response-status: ok

@@ -29,6 +29,7 @@
                 <button onclick="getData(@allInputs[0])" type="button">Launch</button>
                 string divId = "graph" + allInputs[0];
                 <div id=@divId></div>
+                <button onclick="stop()" type="button">Stop data</button>
                 }                  
         </form>
     }
@@ -42,6 +43,12 @@ src="https://www.gstatic.com/charts/loader.js">
     var graphId;
     var time = 0;
     var interval = 2000;
+    var stopVal = false;
+    var realInterval;
+    var endData;
+    var ids;
+    var options;
+
     async function sendData(id){
             var inputValuesArray = document.getElementById(id).elements;
 
@@ -72,11 +79,13 @@ src="https://www.gstatic.com/charts/loader.js">
 
         async function getData(id){
             if(id !== graphId) {
+                time = 0;
+                graphData = [];
                 graphId = id;
                 graphData = [["Time", "Value"]];
-                //graphData = [["Value", "Time"]];
 
             }
+            console.log(graphData);
             var inputValuesArray = document.getElementById(id).elements;
             let finalString = "";
 
@@ -85,7 +94,9 @@ src="https://www.gstatic.com/charts/loader.js">
                 if(document.getElementById(id).elements.item(index).value)
                 finalString+=document.getElementById(id).elements.item(index).value +";";
             }
-            setInterval(async() =>{
+            stopVal = true;
+
+            realInterval = setInterval(async() =>{
                 let res = await fetch(`/home/getString/${id}`, {
                 body: JSON.stringify({
                     execute: finalString,
@@ -97,31 +108,46 @@ src="https://www.gstatic.com/charts/loader.js">
                 method:"POST",
                 });
                  var data = await res.json();
+                 let responseData = true;
                  if (data == "err"){
                      data = Math.random()*100;
                      var graphItem = [time, data];
+                     responseData = false;
+
                  } else{
                      //var graphItem = [data.replace("\r", ""), time];
-                     var graphItem = [time, data.replace("\r", "")];
+                     var graphItem = [time, parseInt(data.replace("\r", ""))];
                  }
-                 console.log(graphItem);
                  time+=interval;
                  graphData.push(graphItem);
-                 console.log(graphData);
-                 google.charts.setOnLoadCallback(renderGraph(graphId));
+                 google.charts.setOnLoadCallback(renderGraph(graphId, responseData));
             }, interval)
         }
 
-        async function renderGraph(id){
-            var endData =  google.visualization.arrayToDataTable(graphData);
-            var options = {
-              title: 'Data visualizer v1.0',
+        async function renderGraph(id, responseData){
+            ids = id;
+            endData =  google.visualization.arrayToDataTable(graphData);
+            let text = "";
+            if(responseData){
+                text = "Data visualizer v1.0"
+            } else{
+                text = "Error data visualizer v1.0"
+            }
+            options = {
+              title: text,
               hAxis: {title: 'Time'},
               vAxis: {title: 'Value'},
-              legend: 'none'
+              legend: 'none',
+              'width':750,
+              'height':550
             };
-            console.log(`graph${id}`);
             var graph = new google.visualization.LineChart(document.getElementById(`graph${id}`));
+            graph.draw(endData, options);
+        }
+
+        async function stop(){
+            clearInterval(realInterval);
+            var graph = new google.visualization.LineChart(document.getElementById(`graph${ids}`));
             graph.draw(endData, options);
         }
 </script>
