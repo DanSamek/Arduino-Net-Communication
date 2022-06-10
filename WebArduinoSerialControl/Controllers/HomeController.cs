@@ -12,12 +12,12 @@ namespace WebArduinoSerialControl.Controllers
     public class HomeController : Controller
     {
         string logsPath = System.IO.Path.GetFullPath(".") + @"\logs.txt";
+        string path = System.IO.Path.GetFullPath(".") + @"\options.csv";
 
         public string recentlyUsed;
         public IActionResult Index()
         {
             string[] ports = SerialPort.GetPortNames();
-            string path = System.IO.Path.GetFullPath(".") + @"\options.csv";
             if (!System.IO.File.Exists(path)) System.IO.File.Create(path);
             string[] csvData = System.IO.File.ReadAllLines(path);
             List<string> inputs = new List<string>();
@@ -83,14 +83,11 @@ namespace WebArduinoSerialControl.Controllers
             return Json(response);
         }
 
-
         public IActionResult Logs() {
-
             List<string> logs = new List<string>();
             string[] data = System.IO.File.ReadAllLines(logsPath);
             foreach (var dataitem in data)
                 logs.Add(dataitem);
-
             return View(logs);
         }
 

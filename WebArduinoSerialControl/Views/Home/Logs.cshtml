@@ -12,8 +12,9 @@
             <p>Datum: @logParts[0]</p>
             <p>Port: @logParts[1]</p>
             <p>Funkce: @logParts[2]</p>
-            for (var i = 3; i < logParts.Length; i++){
-                <p>@logParts[i]</p>
+            <p>Informace piny/hodnoty/response status</p>
+            @for (var i = 3; i < logParts.Length; i++){
+                <p>@logParts[i]</p> 
             }
             <br />
         }
